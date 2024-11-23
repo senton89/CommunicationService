@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
+using CommunicationService.DTO;
 
 namespace ProfessionalCommunicationService
 {
@@ -31,10 +34,58 @@ namespace ProfessionalCommunicationService
         }
 
         // Добавление нового пользователя
-        public async Task AddUserAsync(User user)
+        public async Task AddUserAsync(UserDTO userDto)
         {
-            await _context.users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            using (var hmac = new HMACSHA256())
+            {
+                userDto.created_at = DateTime.Now;
+                userDto.updated_at = DateTime.Now;
+                var hashedPassword = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.password)));
+                var salt = hmac.Key;
+                var user = new User
+                {
+                    username = userDto.username,
+                    email = userDto.email,
+                    password_hash = hashedPassword,
+                    created_at = userDto.created_at,
+                    updated_at = userDto.updated_at,
+                    salt = salt,
+                };
+                await _context.users.AddAsync(user);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<bool> AuthentificateUserAsync(UserDTO userDto)
+        {
+            var user = await _context.users.FirstOrDefaultAsync(u => u.username == userDto.username);
+            if (user != null)
+            {
+                return VerifyPassword(userDto.password, user.password_hash, user.salt);
+            }
+            return false;
+        }
+
+
+        private static bool VerifyPassword(string password, string storedHash, byte[] salt)
+        {
+            using (var hmac = new HMACSHA256(salt))
+            {
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return CompareByteArrays(computedHash, Convert.FromBase64String(storedHash));
+            }
+        }
+        
+        private static bool CompareByteArrays(byte[] a, byte[] b)
+        {
+            if (a.Length != b.Length)
+                return false;
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] != b[i])
+                    return false;
+            }
+            return true;
         }
 
         // Обновление информации о пользователе

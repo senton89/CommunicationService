@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CommunicationService.DTO;
 
 namespace ProfessionalCommunicationService
 {
@@ -23,6 +24,23 @@ namespace ProfessionalCommunicationService
             if (user == null) return NotFound();
             return Ok(user);
         }
+        
+        // Получение пользователя по Username
+        [HttpGet("u={username}")]
+        public async Task<ActionResult<User>> GetUserByUsername(string username)
+        {
+            var user = await _userService.GetUserByUsernameAsync(username);
+            if (user == null) return NotFound();
+            return Ok(user);
+        }
+        // // Получение пользователя по Email
+        // [HttpGet("e={email}")]
+        // public async Task<ActionResult<User>> GetUserByEmail(string email)
+        // {
+        //     var user = await _userService.GetUserByEmailAsync(email);
+        //     if (user == null) return NotFound();
+        //     return Ok(user);
+        // }
 
         // Получение всех пользователей
         [HttpGet]
@@ -33,10 +51,18 @@ namespace ProfessionalCommunicationService
         }
 
         // Регистрация пользователя
-        [HttpPost]
-        public async Task<ActionResult> RegisterUser(User user)
+        [HttpPost("signup")]
+        public async Task<ActionResult> RegisterUser(UserDTO user)
         {
             await _userService.RegisterUserAsync(user);
+            return CreatedAtAction(nameof(GetUserById), new { id = user.id }, user);
+        }
+        
+        // Авторизация пользователя
+        [HttpPost("signin")]
+        public async Task<ActionResult> AuthentificateUser(UserDTO user)
+        {
+            await _userService.AuthentificateUserAsync(user);
             return CreatedAtAction(nameof(GetUserById), new { id = user.id }, user);
         }
 

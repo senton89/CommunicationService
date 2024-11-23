@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
+using CommunicationService.DTO;
 
 namespace ProfessionalCommunicationService
 {
@@ -23,12 +25,22 @@ namespace ProfessionalCommunicationService
         {
             return await _userRepository.GetUserByUsernameAsync(username);
         }
+        
+        // Получение пользователя по почте пользователя
+        // public async Task<User> GetUserByEmailAsync(string email)
+        // {
+        //     return await _userRepository.GetUserByEmailAsync(email);
+        // }
 
         // Регистрация пользователя
-        public async Task RegisterUserAsync(User user)
+        public async Task RegisterUserAsync(UserDTO userDto)
         {
-            // Здесь можно добавить логику для хеширования пароля
-            await _userRepository.AddUserAsync(user);
+            await _userRepository.AddUserAsync(userDto);
+        }
+        
+        public async Task AuthentificateUserAsync(UserDTO userDto)
+        {
+            await _userRepository.AddUserAsync(userDto);
         }
 
         // Получение всех пользователей

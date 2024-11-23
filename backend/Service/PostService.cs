@@ -13,7 +13,11 @@ public class PostService
     {
         return await _postRepository.GetPostsByTopicIdAsync(topicId);
     }
-    
+    public async Task<List<Post>> GetAllPostsAsync()
+    {
+        return await _postRepository.GetAllPostsAsync();
+    }
+
     public async Task<Post> GetPostByIdAsync(int id)
     {
         return await _postRepository.GetPostByIdAsync(id);
@@ -33,5 +37,31 @@ public class PostService
     public async Task DeletePostAsync(int id)
     {
         await _postRepository.DeletePostAsync(id);
+    }
+
+    // Методы для работы с комментариями
+    public async Task CreateCommentAsync(Comment comment)
+    {
+        await _postRepository.AddCommentAsync(comment);
+    }
+
+    public async Task<List<Comment>> GetCommentsByPostIdAsync(int postId)
+    {
+        return await _postRepository.GetCommentsByPostIdAsync(postId);
+    }
+
+    public async Task<Comment> GetCommentByIdAsync(int postId, int id)
+    {
+        return await _postRepository.GetCommentByIdAsync(postId, id);
+    }
+
+    public async Task UpdateCommentAsync(Comment comment)
+    {
+        await _postRepository.UpdateCommentAsync(comment);
+    }
+
+    public async Task DeleteCommentAsync(int postId, int id)
+    {
+        await _postRepository.DeleteCommentAsync(postId, id);
     }
 }

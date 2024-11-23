@@ -27,6 +27,12 @@ namespace ProfessionalCommunicationService
             return CreatedAtAction(nameof(GetMessages), new { senderId = message.sender_id, receiverId = message.receiver_id }, message);
         }
 
-        // Другие методы для работы с сообщениями, например, для удаления
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMessage(int id)
+        {
+            bool result = await _messageService.DeleteMessageAsync(id);
+            if (!result) return NotFound();
+            return NoContent();
+        }
     }
 }

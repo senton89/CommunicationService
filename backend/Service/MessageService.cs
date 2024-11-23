@@ -2,7 +2,6 @@
 
 public class MessageService
 {
-
     private readonly MessageRepository _messageRepository;
 
     public MessageService(MessageRepository messageRepository)
@@ -21,6 +20,9 @@ public class MessageService
         await _messageRepository.AddMessageAsync(message);
     }
 
-    // Другие методы для работы с сообщениями, например, для удаления или редактирования
-
+    public async Task<bool> DeleteMessageAsync(int id)
+    {
+        // Здесь можно добавить логику для проверки существования сообщения перед удалением
+        return await _messageRepository.DeleteMessageAsync(id);
+    }
 }
