@@ -1,6 +1,6 @@
 @CommunicationService_HostAddress = http://localhost:5005
 
-GET {{CommunicationService_HostAddress}}/weatherforecast/
+#GET {{CommunicationService_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

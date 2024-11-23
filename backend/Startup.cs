@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder; // Не забудьте добавить это пространство имен
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +18,16 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+        
+
         // Настройка контекста базы данных с использованием строки подключения
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
@@ -57,6 +67,10 @@ public class Startup
         app.UseStaticFiles(); // Использование статических файлов
 
         app.UseRouting(); // Включение маршрутизации
+
+        app.UseCors("AllowOrigin"); // Используйте CORS-политику
+        // app.UseCors("Access-Control-Allow-Origin"); // Используйте CORS-политику
+        // app.UseCors("Access-Control-Allow-Methods"); // Используйте CORS-политику
 
         app.UseAuthorization(); // Включение авторизации
 
