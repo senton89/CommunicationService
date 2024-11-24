@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using CommunicationService;
 using CommunicationService.DTO;
+using Microsoft.AspNetCore.Authentication;
 
 namespace ProfessionalCommunicationService
 {
@@ -14,6 +17,14 @@ namespace ProfessionalCommunicationService
         public UserController(UserService userService)
         {
             _userService = userService;
+        }
+        
+        // Получение всех пользователей
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
         }
 
         // Получение пользователя по ID
@@ -33,45 +44,75 @@ namespace ProfessionalCommunicationService
             if (user == null) return NotFound();
             return Ok(user);
         }
-        // // Получение пользователя по Email
-        // [HttpGet("e={email}")]
-        // public async Task<ActionResult<User>> GetUserByEmail(string email)
-        // {
-        //     var user = await _userService.GetUserByEmailAsync(email);
-        //     if (user == null) return NotFound();
-        //     return Ok(user);
-        // }
-
-        // Получение всех пользователей
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        
+        // Получение пользователя по Email
+        [HttpGet("e={email}")]
+        public async Task<ActionResult<User>> GetUserByEmail(string email)
         {
-            var users = await _userService.GetAllUsersAsync();
-            return Ok(users);
+            var user = await _userService.GetUserByEmailAsync(email);
+            if (user == null) return NotFound();
+            return Ok(user);
         }
 
         // Регистрация пользователя
         [HttpPost("signup")]
-        public async Task<ActionResult> RegisterUser(UserDTO user)
+        public async Task<ActionResult> RegisterUser(UserDTO userDto)
         {
-            await _userService.RegisterUserAsync(user);
-            return CreatedAtAction(nameof(GetUserById), new { id = user.id }, user);
+            if(userDto.email == null)
+                return Conflict("Email is required.");
+            if(userDto.password == null)
+                return Conflict("Password is required.");
+            
+            var registrationStatus = await _userService.RegisterUserAsync(userDto);
+            switch (registrationStatus)
+            {
+                case RegistrationStatus.Success:
+                    // Если регистрация успешна, автоматически аутентифицируем пользователя
+                    return await AuthentificateUser(userDto);
+                case RegistrationStatus.UsernameExists:
+                    return Conflict("Username already exists.");
+                case RegistrationStatus.EmailExists:
+                    return Conflict("Email already exists.");
+                case RegistrationStatus.Error:
+                default:
+                    return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
         
         // Авторизация пользователя
         [HttpPost("signin")]
-        public async Task<ActionResult> AuthentificateUser(UserDTO user)
+        public async Task<ActionResult> AuthentificateUser (UserDTO userDto)
         {
-            await _userService.AuthentificateUserAsync(user);
-            return CreatedAtAction(nameof(GetUserById), new { id = user.id }, user);
+            var result = await _userService.AuthentificateUserAsync(userDto.username, userDto.password);
+            
+            if (result)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, userDto.username)
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, "MyCookieAuthentication");
+        
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = false,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
+                };
+
+                await HttpContext.SignInAsync("MyCookieAuthentication", new ClaimsPrincipal(claimsIdentity), authProperties);
+
+                return Ok();
+            }
+            return Unauthorized();
         }
 
         // Обновление информации о пользователе
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUser(int id, User user)
-        {
-            if (id != user.id) return BadRequest();
-            await _userService.UpdateUserAsync(user);
+        [HttpPut("{username}")]
+        public async Task<ActionResult> UpdateUser(string username, UserDTO userDto)
+        { 
+            if (username != userDto.username) return BadRequest();
+            await _userService.UpdateUserAsync(userDto);
             return NoContent();
         }
 
@@ -87,9 +128,9 @@ namespace ProfessionalCommunicationService
 
         // Отправка сообщения
         [HttpPost("messages")]
-        public async Task<ActionResult<Message>> SendMessage(Message message)
+        public async Task<ActionResult<Message>> SendMessage(MessageDTO messageDto)
         {
-            var sentMessage = await _userService.SendMessageAsync(message);
+            var sentMessage = await _userService.SendMessageAsync(messageDto);
             return CreatedAtAction(nameof(GetMessageById), new { id = sentMessage.id }, sentMessage);
         }
 
@@ -109,56 +150,6 @@ namespace ProfessionalCommunicationService
             if (message == null) return NotFound();
             return Ok(message);
         }
-
-        // Создание поста
-        [HttpPost("posts")]
-        public async Task<ActionResult<Post>> CreatePost(Post post)
-        {
-            var createdPost = await _userService.CreatePostAsync(post);
-            return CreatedAtAction(nameof(GetPostById), new { id = createdPost.id }, createdPost);
-        }
-
-        // Получение всех постов
-        [HttpGet("posts")]
-        public async Task<ActionResult<IEnumerable<Post>>> GetAllPosts()
-        {
-            var posts = await _userService.GetAllPostsAsync();
-            return Ok(posts);
-        }
-
-        // Получение поста по ID
-        [HttpGet("posts/{id}")]
-        public async Task<ActionResult<Post>> GetPostById(int id)
-        {
-            var post = await _userService.GetPostByIdAsync(id);
-            if (post == null) return NotFound();
-            return Ok(post);
-        }
-
-        // Добавление комментария к посту
-        [HttpPost("posts/{postId}/comments")]
-        public async Task<ActionResult<Comment>> AddComment(int postId, Comment comment)
-        {
-            comment.post_id = postId; // Установка PostId для комментария
-            var createdComment = await _userService.AddCommentAsync(comment);
-            return CreatedAtAction(nameof(GetCommentById), new { id = createdComment.id }, createdComment);
-        }
-
-        // Получение комментариев к посту
-        [HttpGet("posts/{postId}/comments")]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetCommentsByPostId(int postId)
-        {
-            var comments = await _userService.GetCommentsByPostIdAsync(postId);
-            return Ok(comments);
-        }
-
-        // Получение комментария по ID
-        [HttpGet("comments/{id}")]
-        public async Task<ActionResult<Comment>> GetCommentById(int id)
-        {
-            var comment = await _userService.GetCommentByIdAsync(id);
-            if (comment == null) return NotFound();
-            return Ok(comment);
-        }
+        
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using CommunicationService;
 using CommunicationService.DTO;
 
 namespace ProfessionalCommunicationService
@@ -27,20 +28,20 @@ namespace ProfessionalCommunicationService
         }
         
         // Получение пользователя по почте пользователя
-        // public async Task<User> GetUserByEmailAsync(string email)
-        // {
-        //     return await _userRepository.GetUserByEmailAsync(email);
-        // }
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _userRepository.GetUserByEmailAsync(email);
+        }
 
         // Регистрация пользователя
-        public async Task RegisterUserAsync(UserDTO userDto)
+        public async Task<RegistrationStatus> RegisterUserAsync(UserDTO userDto)
         {
-            await _userRepository.AddUserAsync(userDto);
+            return await _userRepository.AddUserAsync(userDto);
         }
         
-        public async Task AuthentificateUserAsync(UserDTO userDto)
+        public async Task<bool> AuthentificateUserAsync(string username, string password)
         {
-            await _userRepository.AddUserAsync(userDto);
+            return await _userRepository.AuthentificateUserAsync(username, password);
         }
 
         // Получение всех пользователей
@@ -50,9 +51,9 @@ namespace ProfessionalCommunicationService
         }
 
         // Обновление информации о пользователе
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(UserDTO userDto)
         {
-            await _userRepository.UpdateUserAsync(user);
+            await _userRepository.UpdateUserAsync(userDto);
         }
 
         // Удаление пользователя
@@ -68,9 +69,9 @@ namespace ProfessionalCommunicationService
         }
 
         // Отправка сообщения
-        public async Task<Message> SendMessageAsync(Message message)
+        public async Task<Message> SendMessageAsync(MessageDTO messageDto)
         {
-            return await _userRepository.AddMessageAsync(message);
+            return await _userRepository.AddMessageAsync(messageDto);
         }
 
         // Получение всех сообщений пользователя
@@ -95,30 +96,6 @@ namespace ProfessionalCommunicationService
         public async Task<IEnumerable<Post>> GetAllPostsAsync()
         {
             return await _userRepository.GetAllPostsAsync();
-        }
-
-        // Получение поста по ID
-        public async Task<Post> GetPostByIdAsync(int id)
-        {
-            return await _userRepository.GetPostByIdAsync(id);
-        }
-
-        // Добавление комментария к посту
-        public async Task<Comment> AddCommentAsync(Comment comment)
-        {
-            return await _userRepository.AddCommentAsync(comment);
-        }
-
-        // Получение комментариев к посту
-        public async Task<IEnumerable<Comment>> GetCommentsByPostIdAsync(int postId)
-        {
-            return await _userRepository.GetCommentsByPostIdAsync(postId);
-        }
-
-        // Получение комментария по ID
-        public async Task<Comment> GetCommentByIdAsync(int id)
-        {
-            return await _userRepository.GetCommentByIdAsync(id);
         }
     }
 }

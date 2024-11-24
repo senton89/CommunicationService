@@ -26,6 +26,14 @@ public class Startup
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
+
+        services.AddAuthentication("MyCookieAuthentication").AddCookie("MyCookieAuthentication", options =>
+        {
+            options.LoginPath = "/api/users/signin"; // Путь к вашему методу аутентификации
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Время жизни cookie
+            options.SlidingExpiration = true; // Обновление времени жизни cookie при активности
+        });
+        
         
 
         // Настройка контекста базы данных с использованием строки подключения
@@ -73,6 +81,7 @@ public class Startup
         // app.UseCors("Access-Control-Allow-Methods"); // Используйте CORS-политику
 
         app.UseAuthorization(); // Включение авторизации
+        app.UseAuthentication(); // Включение аутентификации
 
         app.UseEndpoints(endpoints =>
         {

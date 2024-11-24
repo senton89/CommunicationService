@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using CommunicationService;
 using CommunicationService.DTO;
 
 namespace ProfessionalCommunicationService
@@ -32,40 +33,67 @@ namespace ProfessionalCommunicationService
         {
             return await _context.users.FirstOrDefaultAsync(u => u.username == username);
         }
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _context.users.FirstOrDefaultAsync(u => u.email == email);
+        }
 
         // Добавление нового пользователя
-        public async Task AddUserAsync(UserDTO userDto)
+        public async Task<RegistrationStatus> AddUserAsync(UserDTO userDto)
         {
-            using (var hmac = new HMACSHA256())
+            try
             {
-                userDto.created_at = DateTime.Now;
-                userDto.updated_at = DateTime.Now;
-                var hashedPassword = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.password)));
-                var salt = hmac.Key;
-                var user = new User
+                // Проверка на уникальность username
+                var existingUserByUsername = await _context.users
+                    .AnyAsync(u => u.username == userDto.username);
+                if (existingUserByUsername)
                 {
-                    username = userDto.username,
-                    email = userDto.email,
-                    password_hash = hashedPassword,
-                    created_at = userDto.created_at,
-                    updated_at = userDto.updated_at,
-                    salt = salt,
-                };
-                await _context.users.AddAsync(user);
-                await _context.SaveChangesAsync();
+                    return RegistrationStatus.UsernameExists; 
+                }
+
+                // Проверка на уникальность email
+                var existingUserByEmail = await _context.users
+                    .AnyAsync(u => u.email == userDto.email);
+                if (existingUserByEmail)
+                {
+                    return RegistrationStatus.EmailExists;
+                }
+
+                using (var hmac = new HMACSHA256())
+                {
+                    userDto.created_at = DateTime.UtcNow;
+                    userDto.updated_at = DateTime.UtcNow;
+                    var hashedPassword = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.password)));
+                    var salt = hmac.Key;
+                    var user = new User
+                    {
+                        username = userDto.username,
+                        email = userDto.email!,
+                        password_hash = hashedPassword,
+                        created_at = userDto.created_at,
+                        updated_at = userDto.updated_at,
+                        salt = salt,
+                    };
+                    await _context.users.AddAsync(user);
+                    await _context.SaveChangesAsync();
+                }
+                return RegistrationStatus.Success;
+            }
+            catch
+            {
+                return RegistrationStatus.Error;
             }
         }
 
-        public async Task<bool> AuthentificateUserAsync(UserDTO userDto)
+        public async Task<bool> AuthentificateUserAsync(string username, string password)
         {
-            var user = await _context.users.FirstOrDefaultAsync(u => u.username == userDto.username);
+            var user = await _context.users.FirstOrDefaultAsync(u => u.username == username);
             if (user != null)
             {
-                return VerifyPassword(userDto.password, user.password_hash, user.salt);
+                return VerifyPassword(password, user.password_hash, user.salt);
             }
             return false;
         }
-
 
         private static bool VerifyPassword(string password, string storedHash, byte[] salt)
         {
@@ -89,8 +117,26 @@ namespace ProfessionalCommunicationService
         }
 
         // Обновление информации о пользователе
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(UserDTO userDto)
         {
+            var user = await _context.users.FirstOrDefaultAsync(u => u.username == userDto.username);
+            if (user == null)
+                return;
+            if (userDto.email != null)
+                user.email = userDto.email!;
+            if (userDto.password != null)
+            {
+                using(var hmac = new HMACSHA256())
+                {
+                    user.password_hash =
+                        Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.password)));
+                    user.salt = hmac.Key;
+                }
+            }
+
+            user.created_at = user.created_at.ToUniversalTime();
+            user.updated_at = DateTime.UtcNow;
+
             _context.users.Update(user);
             await _context.SaveChangesAsync();
         }
@@ -113,8 +159,15 @@ namespace ProfessionalCommunicationService
         }
 
         // Отправка сообщения
-        public async Task<Message> AddMessageAsync(Message message)
+        public async Task<Message> AddMessageAsync(MessageDTO messageDto)
         {
+            var message = new Message
+            {
+                sender_id = messageDto.sender_id,
+                receiver_id = messageDto.receiver_id,
+                content = messageDto.content,
+                sent_at = DateTime.UtcNow
+            };
             await _context.messages.AddAsync(message);
             await _context.SaveChangesAsync();
             return message;
@@ -144,32 +197,6 @@ namespace ProfessionalCommunicationService
         public async Task<IEnumerable<Post>> GetAllPostsAsync()
         {
             return await _context.posts.ToListAsync();
-        }
-
-        // Получение поста по ID
-        public async Task<Post> GetPostByIdAsync(int id)
-        {
-            return await _context.posts.FindAsync(id);
-        }
-
-        // Добавление комментария к посту
-        public async Task<Comment> AddCommentAsync(Comment comment)
-        {
-            await _context.comments.AddAsync(comment);
-            await _context.SaveChangesAsync();
-            return comment;
-        }
-
-        // Получение комментариев к посту
-        public async Task<IEnumerable<Comment>> GetCommentsByPostIdAsync(int postId)
-        {
-            return await _context.comments.Where(c => c.post_id == postId).ToListAsync();
-        }
-
-        // Получение комментария по ID
-        public async Task<Comment> GetCommentByIdAsync(int id)
-        {
-            return await _context.comments.FindAsync(id);
         }
     }
 }

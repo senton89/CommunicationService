@@ -1,4 +1,6 @@
-﻿namespace ProfessionalCommunicationService;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ProfessionalCommunicationService;
 
 public class User
 {
