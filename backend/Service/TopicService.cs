@@ -1,4 +1,7 @@
-﻿namespace ProfessionalCommunicationService;
+﻿using CommunicationService;
+using CommunicationService.DTO;
+
+namespace ProfessionalCommunicationService;
 
 public class TopicService
 {
@@ -18,21 +21,25 @@ public class TopicService
     public async Task<Topic> GetTopicByIdAsync(int id)
     {
         return await _topicRepository.GetTopicByIdAsync(id);
+    } 
+    public async Task<Topic> GetTopicByTitleAsync(string title)
+    {
+        return await _topicRepository.GetTopicByTitleAsync(title);
     }
 
-    public async Task CreateTopicAsync(Topic topic)
+    public async Task<ResponseStatus> CreateTopicAsync(TopicDTO topicDto)
     {
         // Здесь можно добавить логику для проверки валидности темы
-        await _topicRepository.AddTopicAsync(topic);
+        return await _topicRepository.AddTopicAsync(topicDto);
     }
 
-    public async Task UpdateTopicAsync(Topic topic)
+    public async Task<ResponseStatus> UpdateTopicAsync(TopicDTO topicDto,int id)
     {
-        await _topicRepository.UpdateTopicAsync(topic);
+        return await _topicRepository.UpdateTopicAsync(topicDto,id);
     }
     
-    public async Task DeleteTopicAsync(int id)
+    public async Task<ResponseStatus> DeleteTopicAsync(int id)
     {
-        await _topicRepository.DeleteTopicAsync(id);
+        return await _topicRepository.DeleteTopicAsync(id);
     }
 }

@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CommunicationService;
+using CommunicationService.DTO;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProfessionalCommunicationService;
 
@@ -21,27 +25,71 @@ public class TopicRepository
     {
         return await _context.topics.FindAsync(id);
     }
-
-    public async Task AddTopicAsync(Topic topic)
+    public async Task<Topic> GetTopicByTitleAsync(string title)
     {
-        await _context.topics.AddAsync(topic);
-        await _context.SaveChangesAsync();
+        return await _context.topics.FirstOrDefaultAsync(x => x.title == title);
     }
 
-    public async Task UpdateTopicAsync(Topic topic)
+    public async Task<ResponseStatus> AddTopicAsync(TopicDTO topicDto)
     {
-        _context.topics.Update(topic);
-        await _context.SaveChangesAsync();
+        var existingTopicName = await _context.topics
+            .AnyAsync(t => t.title == topicDto.title);
+        if (existingTopicName)
+        {
+            return ResponseStatus.Exists;
+        }
+        try
+        {
+            var topic = new Topic
+            {
+                title = topicDto.title,
+                author_id = topicDto.author_id,
+                created_at = DateTime.UtcNow,
+                updated_at = DateTime.UtcNow
+            };
+            await _context.topics.AddAsync(topic);
+            await _context.SaveChangesAsync();
+        }
+        catch 
+        {
+            return ResponseStatus.Error;
+        }
+        return ResponseStatus.Success;
     }
 
-    public async Task DeleteTopicAsync(int id)
+    public async Task<ResponseStatus> UpdateTopicAsync(TopicDTO topicDto,int id)
+    {
+        try
+        {
+            var existingTopic = await _context.topics.FindAsync(id);
+            if (existingTopic == null)
+            {
+                return ResponseStatus.NotExists;
+            }
+
+            existingTopic.title = topicDto.title;
+            existingTopic.author_id = topicDto.author_id;
+            existingTopic.updated_at = DateTime.UtcNow;
+            // _context.topics.Update(existingTopic);
+            await _context.SaveChangesAsync();
+        }
+        catch 
+        {
+            return ResponseStatus.Error;
+        }
+        return ResponseStatus.Success;
+    }
+
+    public async Task<ResponseStatus> DeleteTopicAsync(int id)
     {
         var topic = await GetTopicByIdAsync(id);
         if (topic != null)
         {
             _context.topics.Remove(topic);
             await _context.SaveChangesAsync();
+            return ResponseStatus.Success;
         }
+        return ResponseStatus.Error;
     }
 }
 

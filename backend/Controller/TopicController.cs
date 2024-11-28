@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CommunicationService;
+using CommunicationService.DTO;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ProfessionalCommunicationService
 {
@@ -27,27 +29,59 @@ namespace ProfessionalCommunicationService
             if (topic == null) return NotFound();
             return Ok(topic);
         }
+        
+        [HttpGet("t={title}")]
+        public async Task<ActionResult<Topic>> GetTopicByTitle(string title)
+        {
+            var topic = await _topicService.GetTopicByTitleAsync(title);
+            if (topic == null) return NotFound();
+            return Ok(topic);
+        }
 
         [HttpPost]
-        public async Task<ActionResult> CreateTopic(Topic topic)
+        public async Task<ActionResult> CreateTopic(TopicDTO topicDto)
         {
-            await _topicService.CreateTopicAsync(topic);
-            return CreatedAtAction(nameof(GetTopicById), new { id = topic.id }, topic);
+            var responseStatus = await _topicService.CreateTopicAsync(topicDto);
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return CreatedAtAction(nameof(GetTopicById), new { id = topicDto.id },await _topicService.GetTopicByTitleAsync(topicDto.title));
+                case ResponseStatus.Exists:
+                    return Conflict("Topic with this title already exists.");
+                case ResponseStatus.Error:
+                default:
+                    return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateTopic(int id, Topic topic)
+        public async Task<ActionResult> UpdateTopic(int id, TopicDTO topicDto)
         {
-            if (id != topic.id) return BadRequest();
-            await _topicService.UpdateTopicAsync(topic);
-            return NoContent();
+            // if (id != (await _topicService.GetTopicByTitleAsync(topicDto.title)).id) return BadRequest();
+            var responseStatus = await _topicService.UpdateTopicAsync(topicDto,id);
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return Ok(await _topicService.GetTopicByIdAsync(id));
+                case ResponseStatus.Error:
+                default:
+                    return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteTopic(int id)
         {
-            await _topicService.DeleteTopicAsync(id);
-            return NoContent();
+            var responseStatus = await _topicService.DeleteTopicAsync(id);
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return NoContent();
+                case ResponseStatus.Error:
+                    return StatusCode(404, "The topic could not be found.");
+                default:
+                    return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
     }
 }
