@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CommunicationService;
+using CommunicationService.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProfessionalCommunicationService;
 
@@ -28,33 +30,69 @@ public class PostRepository
         return await _context.posts.FindAsync(id);
     }
 
-    public async Task AddPostAsync(Post post)
+    public async Task<ResponseStatus> AddPostAsync(Post post)
     {
-        await _context.posts.AddAsync(post);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.posts.AddAsync(post);
+            await _context.SaveChangesAsync();
+            return ResponseStatus.Success;
+        }
+        catch
+        {
+            return ResponseStatus.Error;
+        }
     }
 
-    public async Task UpdatePostAsync(Post post)
+    public async Task<ResponseStatus> UpdatePostAsync(PostDTO postDto,int id)
     {
-        _context.posts.Update(post);
-        await _context.SaveChangesAsync();
+        try
+        {
+            var existingPost = await GetPostByIdAsync(id);
+            if (existingPost == null)
+            {
+                return ResponseStatus.NotFound;
+            }
+            existingPost.content = postDto.content;
+            existingPost.updated_at = DateTime.Now.ToUniversalTime();
+
+            _context.posts.Update(existingPost);
+            await _context.SaveChangesAsync();
+            return ResponseStatus.Success;
+        }
+        catch
+        {
+            return ResponseStatus.Error;
+        }
     }
 
-    public async Task DeletePostAsync(int id)
+    public async Task<ResponseStatus> DeletePostAsync(int id)
     {
         var post = await GetPostByIdAsync(id);
         if (post != null)
         {
             _context.posts.Remove(post);
             await _context.SaveChangesAsync();
+            return ResponseStatus.Success;
         }
+        return ResponseStatus.NotFound;
     }
 
     // Методы для работы с комментариями
-    public async Task AddCommentAsync(Comment comment)
+    public async Task<ResponseStatus> AddCommentAsync(Comment comment)
     {
-        await _context.comments.AddAsync(comment);
-        await _context.SaveChangesAsync();
+        try
+        {
+            comment.created_at = DateTime.Now.ToUniversalTime();
+            comment.updated_at = DateTime.Now.ToUniversalTime();
+            await _context.comments.AddAsync(comment);
+            await _context.SaveChangesAsync();
+            return ResponseStatus.Success;
+        }
+        catch
+        {
+            return ResponseStatus.Error;
+        }
     }
 
     public async Task<List<Comment>> GetCommentsByPostIdAsync(int postId)
@@ -70,19 +108,39 @@ public class PostRepository
             .FirstOrDefaultAsync(c => c.post_id == postId && c.id == id);
     }
 
-    public async Task UpdateCommentAsync(Comment comment)
+    public async Task<ResponseStatus> UpdateCommentAsync(CommentDTO commentDto, int id)
     {
-        _context.comments.Update(comment);
-        await _context.SaveChangesAsync();
+        try
+        {
+            var existingComment = await GetCommentByIdAsync(commentDto.post_id, id);
+            if (existingComment == null)
+            {
+                return ResponseStatus.NotFound;
+            }
+
+            existingComment.content = commentDto.content;
+            existingComment.updated_at = DateTime.Now.ToUniversalTime();
+            existingComment.created_at = existingComment.created_at.ToUniversalTime();
+            
+            _context.comments.Update(existingComment);
+            await _context.SaveChangesAsync();
+            return ResponseStatus.Success;
+        }
+        catch
+        {
+            return ResponseStatus.Error;
+        }
     }
 
-    public async Task DeleteCommentAsync(int postId, int id)
+    public async Task<ResponseStatus> DeleteCommentAsync(int postId, int id)
     {
         var comment = await GetCommentByIdAsync(postId, id);
         if (comment != null)
         {
             _context.comments.Remove(comment);
             await _context.SaveChangesAsync();
+            return ResponseStatus.Success;
         }
+        return ResponseStatus.NotFound;
     }
 }

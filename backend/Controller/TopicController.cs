@@ -57,12 +57,13 @@ namespace ProfessionalCommunicationService
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateTopic(int id, TopicDTO topicDto)
         {
-            // if (id != (await _topicService.GetTopicByTitleAsync(topicDto.title)).id) return BadRequest();
             var responseStatus = await _topicService.UpdateTopicAsync(topicDto,id);
             switch (responseStatus)
             {
                 case ResponseStatus.Success:
                     return Ok(await _topicService.GetTopicByIdAsync(id));
+                case ResponseStatus.NotFound:
+                    return NotFound();
                 case ResponseStatus.Error:
                 default:
                     return StatusCode(500, "An error occurred while processing your request.");

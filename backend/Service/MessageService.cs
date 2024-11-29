@@ -1,4 +1,7 @@
-﻿namespace ProfessionalCommunicationService;
+﻿using CommunicationService;
+using CommunicationService.DTO;
+
+namespace ProfessionalCommunicationService;
 
 public class MessageService
 {
@@ -14,15 +17,17 @@ public class MessageService
         return await _messageRepository.GetMessagesAsync(senderId, receiverId);
     }
 
-    public async Task SendMessageAsync(Message message)
+    public async Task<ResponseStatus> SendMessageAsync(Message message)
     {
-        // Здесь можно добавить логику для проверки валидности сообщения
-        await _messageRepository.AddMessageAsync(message);
+        return await _messageRepository.AddMessageAsync(message);
+    }
+    public async Task<ResponseStatus> UpdateMessageAsync(MessageDTO updatedMessage,int id)
+    {
+        return await _messageRepository.UpdateMessageAsync(updatedMessage,id);
     }
 
-    public async Task<bool> DeleteMessageAsync(int id)
+    public async Task<ResponseStatus> DeleteMessageAsync(int id)
     {
-        // Здесь можно добавить логику для проверки существования сообщения перед удалением
         return await _messageRepository.DeleteMessageAsync(id);
     }
 }

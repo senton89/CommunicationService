@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using ProfessionalCommunicationService;
 
 namespace CommunicationService;
@@ -34,8 +35,12 @@ public class Startup
             options.SlidingExpiration = true; // Обновление времени жизни cookie при активности
         });
         
+        // Добавление Swagger
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Communication Service API", Version = "v1" });
+        });
         
-
         // Настройка контекста базы данных с использованием строки подключения
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
@@ -58,7 +63,7 @@ public class Startup
         services.AddRouting();
         services.AddControllers(); // Раскомментируйте, если используете контроллеры
     }
-
+    
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
@@ -83,10 +88,21 @@ public class Startup
         app.UseAuthorization(); // Включение авторизации
         app.UseAuthentication(); // Включение аутентификации
 
+        // Включение Swagger
+        app.UseSwagger();
+
+        // Включение Swagger UI
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Communication Service API V1");
+            c.RoutePrefix = "swagger"; // Чтобы Swagger UI был доступен по корневому адресу
+        });
+        
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers(); // Маршрутизация контроллеров
             // Можно добавить другие маршруты, если нужно
         });
+        
     }
 }

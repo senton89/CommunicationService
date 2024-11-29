@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using CommunicationService;
+using CommunicationService.DTO;
 
 namespace ProfessionalCommunicationService
 {
@@ -23,16 +25,53 @@ namespace ProfessionalCommunicationService
         [HttpPost]
         public async Task<ActionResult> SendMessage(Message message)
         {
-            await _messageService.SendMessageAsync(message);
-            return CreatedAtAction(nameof(GetMessages), new { senderId = message.sender_id, receiverId = message.receiver_id }, message);
+            var responseStatus = await _messageService.SendMessageAsync(message);
+
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return CreatedAtAction(nameof(GetMessages), new { senderId = message.sender_id, receiverId = message.receiver_id }, message);
+                case ResponseStatus.Error:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while sending the message.");
+                default:
+                    return BadRequest("Invalid message data.");
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateMessage(int id, MessageDTO updatedMessage)
+        {
+            var responseStatus = await _messageService.UpdateMessageAsync(updatedMessage,id);
+
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return NoContent(); // Успешное обновление
+                case ResponseStatus.NotFound:
+                    return NotFound(); // Сообщение не найдено
+                case ResponseStatus.Error:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating the message.");
+                default:
+                    return BadRequest("Invalid message data.");
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMessage(int id)
         {
-            bool result = await _messageService.DeleteMessageAsync(id);
-            if (!result) return NotFound();
-            return NoContent();
+            var responseStatus = await _messageService.DeleteMessageAsync(id);
+
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return NoContent();
+                case ResponseStatus.NotFound:
+                    return NotFound();
+                case ResponseStatus.Error:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the message.");
+                default:
+                    return BadRequest("Invalid message ID.");
+            }
         }
     }
 }

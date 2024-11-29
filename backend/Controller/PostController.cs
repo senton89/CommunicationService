@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CommunicationService;
+using CommunicationService.DTO;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ProfessionalCommunicationService
 {
@@ -38,31 +40,64 @@ namespace ProfessionalCommunicationService
         [HttpPost]
         public async Task<ActionResult> CreatePost(Post post)
         {
-            await _postService.CreatePostAsync(post);
-            return CreatedAtAction(nameof(GetPostById), new { id = post.id }, post);
+            var responseStatus = await _postService.CreatePostAsync(post);
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return CreatedAtAction(nameof(GetPostById), new { id = post.id }, post);
+                case ResponseStatus.Error:
+                default:
+                    return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdatePost(int id, Post post)
+        public async Task<ActionResult> UpdatePost(int id, PostDTO postDto)
         {
-            if (id != post.id) return BadRequest();
-            await _postService.UpdatePostAsync(post);
-            return NoContent();
+            var responseStatus = await _postService.UpdatePostAsync(postDto,id);
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return NoContent();
+                case ResponseStatus.NotFound:
+                    return NotFound("Post not found.");
+                case ResponseStatus.Error:
+                default:
+                    return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeletePost(int id)
         {
-            await _postService.DeletePostAsync(id);
-            return NoContent();
+            var responseStatus = await _postService.DeletePostAsync(id);
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return NoContent();
+                case ResponseStatus.NotFound:
+                    return NotFound("Post not found.");
+                case ResponseStatus.Error:
+                default:
+                    return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
         
         [HttpPost("{postId}/comments")]
         public async Task<ActionResult> CreateComment(int postId, Comment comment)
         {
             comment.post_id = postId; // Установим идентификатор поста для комментария
-            await _postService.CreateCommentAsync(comment);
-            return CreatedAtAction(nameof(GetCommentById), new { postId = postId, id = comment.id }, comment);
+            var responseStatus = await _postService.CreateCommentAsync(comment);
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return CreatedAtAction(nameof(GetCommentById), new { postId = postId, id = comment.id }, comment);
+                case ResponseStatus.Exists:
+                    return Conflict("Comment with this ID already exists.");
+                case ResponseStatus.Error:
+                default:
+                    return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet("{postId}/comments")]
@@ -81,19 +116,36 @@ namespace ProfessionalCommunicationService
         }
 
         [HttpPut("{postId}/comments/{id}")]
-        public async Task<ActionResult> UpdateComment(int postId, int id, Comment comment)
+        public async Task<ActionResult> UpdateComment(int postId, int id, CommentDTO commentDto)
         {
-            if (id != comment.id) return BadRequest();
-            comment.post_id = postId; // Обновляем идентификатор поста
-            await _postService.UpdateCommentAsync(comment);
-            return NoContent();
+            commentDto.post_id = postId; // Обновляем идентификатор поста
+            var responseStatus = await _postService.UpdateCommentAsync(commentDto,id);
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return NoContent();
+                case ResponseStatus.NotFound:
+                    return NotFound("Comment not found.");
+                case ResponseStatus.Error:
+                default:
+                    return StatusCode (500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpDelete("{postId}/comments/{id}")]
         public async Task<ActionResult> DeleteComment(int postId, int id)
         {
-            await _postService.DeleteCommentAsync(postId, id);
-            return NoContent();
+            var responseStatus = await _postService.DeleteCommentAsync(postId, id);
+            switch (responseStatus)
+            {
+                case ResponseStatus.Success:
+                    return NoContent();
+                case ResponseStatus.NotFound:
+                    return NotFound("Comment not found.");
+                case ResponseStatus.Error:
+                default:
+                    return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
     }
 }

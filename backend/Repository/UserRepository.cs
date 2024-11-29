@@ -61,8 +61,8 @@ namespace ProfessionalCommunicationService
 
                 using (var hmac = new HMACSHA256())
                 {
-                    userDto.created_at = DateTime.UtcNow;
-                    userDto.updated_at = DateTime.UtcNow;
+                    userDto.created_at = DateTime.Now.ToUniversalTime();
+                    userDto.updated_at = DateTime.Now.ToUniversalTime();
                     var hashedPassword = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.password)));
                     var salt = hmac.Key;
                     var user = new User
@@ -135,7 +135,7 @@ namespace ProfessionalCommunicationService
             }
 
             user.created_at = user.created_at.ToUniversalTime();
-            user.updated_at = DateTime.UtcNow;
+            user.updated_at = DateTime.Now.ToUniversalTime();
 
             _context.users.Update(user);
             await _context.SaveChangesAsync();
@@ -166,7 +166,7 @@ namespace ProfessionalCommunicationService
                 sender_id = messageDto.sender_id,
                 receiver_id = messageDto.receiver_id,
                 content = messageDto.content,
-                sent_at = DateTime.UtcNow
+                sent_at = DateTime.Now.ToUniversalTime(),
             };
             await _context.messages.AddAsync(message);
             await _context.SaveChangesAsync();

@@ -1,4 +1,7 @@
-﻿namespace ProfessionalCommunicationService;
+﻿using CommunicationService;
+using CommunicationService.DTO;
+
+namespace ProfessionalCommunicationService;
 
 public class PostService
 {
@@ -13,6 +16,7 @@ public class PostService
     {
         return await _postRepository.GetPostsByTopicIdAsync(topicId);
     }
+
     public async Task<List<Post>> GetAllPostsAsync()
     {
         return await _postRepository.GetAllPostsAsync();
@@ -23,26 +27,28 @@ public class PostService
         return await _postRepository.GetPostByIdAsync(id);
     }
 
-    public async Task CreatePostAsync(Post post)
+    public async Task<ResponseStatus> CreatePostAsync(Post post)
     {
         // Здесь можно добавить логику для проверки валидности поста
-        await _postRepository.AddPostAsync(post);
+        return await _postRepository.AddPostAsync(post);
     }
 
-    public async Task UpdatePostAsync(Post post)
+    public async Task<ResponseStatus> UpdatePostAsync(PostDTO postDto,int id)
     {
-        await _postRepository.UpdatePostAsync(post);
+        // Здесь можно добавить логику для проверки валидности поста перед обновлением
+        return await _postRepository.UpdatePostAsync(postDto,id);
     }
 
-    public async Task DeletePostAsync(int id)
+    public async Task<ResponseStatus> DeletePostAsync(int id)
     {
-        await _postRepository.DeletePostAsync(id);
+        return await _postRepository.DeletePostAsync(id);
     }
 
     // Методы для работы с комментариями
-    public async Task CreateCommentAsync(Comment comment)
+    public async Task<ResponseStatus> CreateCommentAsync(Comment comment)
     {
-        await _postRepository.AddCommentAsync(comment);
+        // Здесь можно добавить логику для проверки валидности комментария
+        return await _postRepository.AddCommentAsync(comment);
     }
 
     public async Task<List<Comment>> GetCommentsByPostIdAsync(int postId)
@@ -55,13 +61,14 @@ public class PostService
         return await _postRepository.GetCommentByIdAsync(postId, id);
     }
 
-    public async Task UpdateCommentAsync(Comment comment)
+    public async Task<ResponseStatus> UpdateCommentAsync(CommentDTO commentDto,int id)
     {
-        await _postRepository.UpdateCommentAsync(comment);
+        // Здесь можно добавить логику для проверки валидности комментария перед обновлением
+        return await _postRepository.UpdateCommentAsync(commentDto,id);
     }
 
-    public async Task DeleteCommentAsync(int postId, int id)
+    public async Task<ResponseStatus> DeleteCommentAsync(int postId, int id)
     {
-        await _postRepository.DeleteCommentAsync(postId, id);
+        return await _postRepository.DeleteCommentAsync(postId, id);
     }
 }

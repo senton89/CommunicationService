@@ -44,8 +44,8 @@ public class TopicRepository
             {
                 title = topicDto.title,
                 author_id = topicDto.author_id,
-                created_at = DateTime.UtcNow,
-                updated_at = DateTime.UtcNow
+                created_at = DateTime.Now.ToUniversalTime(),
+                updated_at = DateTime.Now.ToUniversalTime()
             };
             await _context.topics.AddAsync(topic);
             await _context.SaveChangesAsync();
@@ -64,12 +64,12 @@ public class TopicRepository
             var existingTopic = await _context.topics.FindAsync(id);
             if (existingTopic == null)
             {
-                return ResponseStatus.NotExists;
+                return ResponseStatus.NotFound;
             }
 
             existingTopic.title = topicDto.title;
             existingTopic.author_id = topicDto.author_id;
-            existingTopic.updated_at = DateTime.UtcNow;
+            existingTopic.updated_at = DateTime.Now.ToUniversalTime();
             // _context.topics.Update(existingTopic);
             await _context.SaveChangesAsync();
         }

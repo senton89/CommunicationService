@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CommunicationService;
+using CommunicationService.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProfessionalCommunicationService;
 
@@ -19,13 +21,46 @@ public class MessageRepository
             .ToListAsync();
     }
 
-    public async Task AddMessageAsync(Message message)
+    public async Task<ResponseStatus> AddMessageAsync(Message message)
     {
-        await _context.messages.AddAsync(message);
-        await _context.SaveChangesAsync();
+        try
+        {
+            message.sent_at = DateTime.Now.ToUniversalTime();
+            await _context.messages.AddAsync(message);
+            await _context.SaveChangesAsync();
+            return ResponseStatus.Success; // Успешное добавление сообщения
+        }
+        catch
+        {
+            return ResponseStatus.Error;
+        }
     }
 
-    public async Task<bool> DeleteMessageAsync(int id)
+    public async Task<Message> GetMessageByIdAsync(int id)
+    {
+        // Найти сообщение по идентификатору
+        return await _context.messages.FindAsync(id);
+    }
+
+    public async Task<ResponseStatus> UpdateMessageAsync(MessageDTO updatedMessage,int id)
+    {
+        // Найти сообщение по идентификатору
+        var existingMessage = await _context.messages.FindAsync(id);
+        if (existingMessage == null)
+        {
+            return ResponseStatus.NotFound; // Сообщение не найдено
+        }
+
+        // Обновить свойства существующего сообщения
+        existingMessage.content = updatedMessage.content;
+        existingMessage.sent_at = existingMessage.sent_at.ToUniversalTime();
+
+        // Сохранить изменения в базе данных
+        await _context.SaveChangesAsync();
+        return ResponseStatus.Success; // Успешное обновление
+    }
+
+    public async Task<ResponseStatus> DeleteMessageAsync(int id)
     {
         // Найти сообщение по идентификатору
         var message = await _context.messages.FindAsync(id);
@@ -35,11 +70,11 @@ public class MessageRepository
             // Удалить сообщение из контекста
             _context.messages.Remove(message);
             await _context.SaveChangesAsync(); // Сохранить изменения в базе данных
-            return true;
+            return ResponseStatus.Success; // Успешное удаление
         }
         else
         {
-            return false;
+            return ResponseStatus.NotFound; // Сообщение не найдено
         }
     }
 }
