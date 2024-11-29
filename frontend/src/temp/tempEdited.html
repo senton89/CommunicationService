@@ -1,0 +1,291 @@
+<html>
+<head>
+  <title>Web Service Messenger + Forum</title>
+  <script src="https://unpkg.com/react/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f5e9e2;
+    }
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      display: flex;
+    }
+    .main-content {
+      flex: 2;
+      padding-right: 20px;
+      border-right: 1px solid #e0e0e0;
+    }
+    .forum-content {
+      flex: 1;
+      padding-left: 20px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .header img {
+      border-radius: 50%;
+    }
+    .header button {
+      background-color: #f5e9e2;
+      border: 1px solid #e0e0e0;
+      border-radius: 20px;
+      padding: 5px 15px;
+      font-size: 14px;
+    }
+    .section-title {
+      font-weight: 600;
+      margin: 20px 0 10px;
+    }
+    .contact-item, .forum-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .contact-item img, .forum-item img {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+    }
+    .contact-info, .forum-info {
+      flex-grow: 1;
+      margin-left: 10px;
+    }
+    .contact-info p, .forum-info p {
+      margin: 0;
+    }
+    .contact-info .name, .forum-info .name {
+      font-weight: 600;
+    }
+    .contact-info .details, .forum-info .details {
+      font-size: 12px;
+      color: #888;
+    }
+    .contact-time, .forum-time {
+      font-size: 12px;
+      color: #888;
+    }
+    .search-bar {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+    }
+    .search-bar input {
+      flex-grow: 1;
+      border: none;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 5px;
+      font-size: 14px;
+    }
+    .search-bar button {
+      background-color: #f5e9e2;
+      border: 1px solid #e0e0e0;
+      border-radius: 50%;
+      padding: 5px;
+      margin-left: 10px;
+    }
+    .forum-section {
+      margin-top: 20px;
+    }
+    .forum-section .forum-item {
+      padding: 10px 0;
+    }
+    .forum-section .forum-item .forum-info {
+      flex-grow: 1;
+      margin-left: 10px;
+    }
+    .forum-section .forum-item .forum-info .name {
+      font-weight: 600;
+    }
+    .forum-section .forum-item .forum-info .details {
+      font-size: 12px;
+      color: #888;
+    }
+    .forum-section .forum-item .forum-time {
+      font-size: 12px;
+      color: #888;
+    }
+    .forum-section .forum-item .forum-actions {
+      display: flex;
+      align-items: center;
+    }
+    .forum-section .forum-item .forum-actions i {
+      margin-left: 10px;
+      color: #888;
+    }
+    .forum-section .forum-item .forum-actions i:hover {
+      color: #000;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .footer button {
+      background-color: #4a4a4a;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="main-content">
+    <div class="header">
+      <div class="flex items-center">
+        <img alt="Profile picture" height="50" src="https://placehold.co/50x50" width="50"/>
+        <div class="ml-3">
+          <p class="font-semibold">Brot Nebp</p>
+          <p class="text-sm text-gray-500">Purkut belove</p>
+        </div>
+      </div>
+      <button>Start Chat</button>
+    </div>
+    <div class="section-title">Contacts</div>
+    <div class="contact-item">
+      <div class="flex items-center">
+        <img alt="Contact picture" height="40" src="https://placehold.co/40x40" width="40"/>
+        <div class="contact-info">
+          <p class="name">Masmoei Jepe</p>
+          <p class="details">Dervyanine 72.5e 1/2.09 filulver 1</p>
+        </div>
+      </div>
+      <div class="contact-time">9:00 AM</div>
+    </div>
+    <div class="contact-item">
+      <div class="flex items-center">
+        <img alt="Contact picture" height="40" src="https://placehold.co/40x40" width="40"/>
+        <div class="contact-info">
+          <p class="name">Ilan Singra</p>
+          <p class="details">Lounguster ten 22.5e - 1 Millous Has</p>
+        </div>
+      </div>
+      <div class="contact-time">9:00 AM</div>
+    </div>
+    <div class="contact-item">
+      <div class="flex items-center">
+        <img alt="Contact picture" height="40" src="https://placehold.co/40x40" width="40"/>
+        <div class="contact-info">
+          <p class="name">Lorin Lo Help</p>
+          <p class="details">Loungucidle Lika - 2:32 Doblyar</p>
+        </div>
+      </div>
+      <div class="contact-time">9:00 AM</div>
+    </div>
+    <div class="contact-item">
+      <div class="flex items-center">
+        <img alt="Contact picture" height="40" src="https://placehold.co/40x40" width="40"/>
+        <div class="contact-info">
+          <p class="name">Rongin Oc. Froe</p>
+          <p class="details">Johmtgualve 12.3e - Coutrod.</p>
+        </div>
+      </div>
+      <div class="contact-time">9:00 AM</div>
+    </div>
+    <div class="section-title">Software</div>
+    <div class="contact-item">
+      <div class="flex items-center">
+        <img alt="Contact picture" height="40" src="https://placehold.co/40x40" width="40"/>
+        <div class="contact-info">
+          <p class="name">Innjom Galbbu</p>
+          <p class="details">Vd1. I Miallot do Coom Betting</p>
+        </div>
+      </div>
+      <div class="contact-time">9:00 AM</div>
+    </div>
+    <div class="search-bar">
+      <input placeholder="Search Contacts" type="text"/>
+      <button><i class="fas fa-search"></i></button>
+    </div>
+  </div>
+  <div class="forum-content">
+    <div class="forum-section">
+      <div class="section-title">Forum</div>
+      <div class="forum-item">
+        <div class="flex items-center">
+          <img alt="Forum picture " height="40" src="https://placehold.co/40x40" width="40"/>
+          <div class="forum-info">
+            <p class="name">Contobr Frosn</p>
+            <p class="details">Discussing recent updates</p>
+          </div>
+        </div>
+        <div class="forum-actions">
+          <i class="fas fa-heart"></i>
+          <i class="fas fa-plus"></i>
+        </div>
+      </div>
+      <div class="section-title">Education</div>
+      <div class="forum-item">
+        <div class="flex items-center">
+          <img alt="Forum picture" height="40" src="https://placehold.co/40x40" width="40"/>
+          <div class="forum-info">
+            <p class="name">Nota Boar Haligjusto</p>
+            <p class="details">Exploring new learning methods</p>
+          </div>
+        </div>
+        <div class="forum-actions">
+          <i class="fas fa-heart"></i>
+        </div>
+      </div>
+      <div class="forum-item">
+        <div class="flex items-center">
+          <img alt="Forum picture" height="40" src="https://placehold.co/40x40" width="40"/>
+          <div class="forum-info">
+            <p class="name">Degia</p>
+            <p class="details">Sharing insights on productivity</p>
+          </div>
+        </div>
+        <div class="forum-actions">
+          <i class="fas fa-heart"></i>
+        </div>
+      </div>
+      <div class="forum-item">
+        <div class="flex items-center">
+          <img alt="Forum picture" height="40" src="https://placehold.co/40x40" width="40"/>
+          <div class="forum-info">
+            <p class="name">Srbianis Harrige</p>
+            <p class="details">Discussing project management tools</p>
+          </div>
+        </div>
+        <div class="forum-actions">
+          <i class="fas fa-heart"></i>
+        </div>
+      </div>
+      <div class="forum-item">
+        <div class="flex items-center">
+          <img alt="Forum picture" height="40" src="https://placehold.co/40x40" width="40"/>
+          <div class="forum-info">
+            <p class="name">Fecums</p>
+            <p class="details">Networking opportunities</p>
+          </div>
+        </div>
+        <div class="forum-actions">
+          <i class="fas fa-heart"></i>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <button>View All Discussions</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

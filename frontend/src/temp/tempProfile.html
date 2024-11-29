@@ -1,0 +1,99 @@
+<html>
+<head>
+  <title>User Profile - Web Service Messenger + Forum</title>
+  <script src="https://unpkg.com/react/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      padding: 2% 5% 0 5%;
+      font-family: 'Inter', sans-serif;
+      background-color: #f5e9e2;
+    }
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .header img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      margin-right: 20px;
+    }
+    .header h2 {
+      margin: 0;
+      font-weight: 600;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    .form-group textarea {
+      resize: vertical;
+      height: 100px;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .footer button {
+      background-color: #4a4a4a;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .footer button:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <img alt="Profile picture" src="https://placehold.co/100x100"/>
+    <h2>User Profile</h2>
+  </div>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" id="name" placeholder="Enter your name" required />
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Enter your email" required />
+  </div>
+  <div class="form-group">
+    <label for="bio">Biography</label>
+    <textarea id="bio" placeholder="Tell us about yourself..." required></textarea>
+  </div>
+  <div class="footer">
+    <button type="submit">Save Profile</button>
+  </div>
+</div>
+</body>
+</html>
