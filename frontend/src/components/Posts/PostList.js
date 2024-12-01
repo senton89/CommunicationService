@@ -10,16 +10,7 @@ const PostList = () => {
     }, []);
 
     return (
-        <div>
-            <h1>Posts</h1>
-            <ul>
-                {posts.map(post => (
-                    <li key={post.id}>
-                        <Link to={`/posts/${post.id}`}>{post.title}</Link>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        posts
     );
 };
 

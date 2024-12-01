@@ -7,6 +7,12 @@ const UserService = {
     const response = await axios.get(`${API_URL}/${id}`);
     return response.data;
 },
+
+    login: async (username, password) => {
+            const response = await axios.post(`${API_URL}/signin`, { username, password });
+            return response.data; // Предполагается, что API возвращает user
+},
+
     getUsers: async () => {
     const response = await axios.get(API_URL);
     return response.data;
