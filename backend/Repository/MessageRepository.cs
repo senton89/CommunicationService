@@ -13,6 +13,22 @@ public class MessageRepository
         _context = context;
     }
 
+    public async Task<List<Message>> GetMessagesByUserIdAsync(int userId)
+    {
+        // Получаем все сообщения, отправленные к пользователю
+        var messages = await _context.messages
+            .Where(m => m.receiver_id == userId || m.sender_id == userId) // Получаем сообщения, полученные пользователем
+            .ToListAsync();
+
+        // Группируем сообщения по sender_id и выбираем последнее сообщение от каждого отправителя
+        var lastMessages = messages
+            .GroupBy(m => m.sender_id == userId ? m.receiver_id : m.sender_id) // Группируем по собеседнику
+            .Select(g => g.OrderByDescending(m => m.sent_at).FirstOrDefault()) // Выбираем последнее сообщение от каждого собеседника
+            .ToList();
+
+        return lastMessages;
+    }
+    
     public async Task<List<Message>> GetMessagesAsync(int senderId, int receiverId)
     {
         return await _context.messages

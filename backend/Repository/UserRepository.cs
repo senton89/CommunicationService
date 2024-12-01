@@ -85,14 +85,18 @@ namespace ProfessionalCommunicationService
             }
         }
 
-        public async Task<bool> AuthentificateUserAsync(string username, string password)
+        public async Task<User?> AuthentificateUserAsync(string username, string password)
         {
             var user = await _context.users.FirstOrDefaultAsync(u => u.username == username);
             if (user != null)
             {
-                return VerifyPassword(password, user.password_hash, user.salt);
+                if (VerifyPassword(password, user.password_hash, user.salt))
+                {
+                    return user;
+                }
+                return null;
             }
-            return false;
+            return null;
         }
 
         private static bool VerifyPassword(string password, string storedHash, byte[] salt)
@@ -117,9 +121,9 @@ namespace ProfessionalCommunicationService
         }
 
         // Обновление информации о пользователе
-        public async Task UpdateUserAsync(UserDTO userDto)
+        public async Task UpdateUserAsync(UserDTO userDto, int id)
         {
-            var user = await _context.users.FirstOrDefaultAsync(u => u.username == userDto.username);
+            var user = await _context.users.FindAsync(id);
             if (user == null)
                 return;
             if (userDto.email != null)

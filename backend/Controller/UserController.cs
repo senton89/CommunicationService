@@ -83,9 +83,9 @@ namespace ProfessionalCommunicationService
         [HttpPost("signin")]
         public async Task<ActionResult> AuthentificateUser (UserDTO userDto)
         {
-            var result = await _userService.AuthentificateUserAsync(userDto.username, userDto.password);
+            var resultUser = await _userService.AuthentificateUserAsync(userDto.username, userDto.password);
             
-            if (result)
+            if (resultUser!=null)
             {
                 var claims = new List<Claim>
                 {
@@ -102,17 +102,16 @@ namespace ProfessionalCommunicationService
 
                 await HttpContext.SignInAsync("MyCookieAuthentication", new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                return Ok();
+                return Ok(resultUser);
             }
             return Unauthorized();
         }
 
         // Обновление информации о пользователе
-        [HttpPut("{username}")]
-        public async Task<ActionResult> UpdateUser(string username, UserDTO userDto)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateUser(int id, UserDTO userDto)
         { 
-            if (username != userDto.username) return BadRequest();
-            await _userService.UpdateUserAsync(userDto);
+            await _userService.UpdateUserAsync(userDto, id);
             return NoContent();
         }
 

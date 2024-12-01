@@ -12,7 +12,11 @@ public class MessageService
         _messageRepository = messageRepository;
     }
 
-    public async Task<List<Message>> GetMessagesAsync(int senderId, int receiverId)
+    public async Task<List<Message>> GetMessagesByUserIdAsync(int userId)
+    {
+        return await _messageRepository.GetMessagesByUserIdAsync(userId);
+    }
+ public async Task<List<Message>> GetMessagesAsync(int senderId, int receiverId)
     {
         return await _messageRepository.GetMessagesAsync(senderId, receiverId);
     }

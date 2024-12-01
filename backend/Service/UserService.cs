@@ -39,7 +39,7 @@ namespace ProfessionalCommunicationService
             return await _userRepository.AddUserAsync(userDto);
         }
         
-        public async Task<bool> AuthentificateUserAsync(string username, string password)
+        public async Task<User?> AuthentificateUserAsync(string username, string password)
         {
             return await _userRepository.AuthentificateUserAsync(username, password);
         }
@@ -51,9 +51,9 @@ namespace ProfessionalCommunicationService
         }
 
         // Обновление информации о пользователе
-        public async Task UpdateUserAsync(UserDTO userDto)
+        public async Task UpdateUserAsync(UserDTO userDto, int id)
         {
-            await _userRepository.UpdateUserAsync(userDto);
+            await _userRepository.UpdateUserAsync(userDto, id);
         }
 
         // Удаление пользователя

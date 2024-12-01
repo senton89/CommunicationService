@@ -15,6 +15,13 @@ namespace ProfessionalCommunicationService
             _messageService = messageService;
         }
 
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<List<Message>>> GetMessages(int userId)
+        {
+            var messages = await _messageService.GetMessagesByUserIdAsync(userId);
+            return Ok(messages);
+        }
+        
         [HttpGet("{senderId}/{receiverId}")]
         public async Task<ActionResult<List<Message>>> GetMessages(int senderId, int receiverId)
         {
