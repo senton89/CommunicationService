@@ -22,6 +22,7 @@ const UserService = {
     return response.data;
 },
     updateUser: async (id, user) => {
+        if(user.password === '') user.password = JSON.parse(localStorage.getItem('user')).password;
     const response = await axios.put(`${API_URL}/${id}`, user);
     return response.data;
 },

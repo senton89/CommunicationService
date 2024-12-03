@@ -1,99 +1,61 @@
 import React, { useEffect, useState } from 'react';
+import './UserProfileStyle.css';
 import UserService from '../../services/UserService';
-import { useParams } from 'react-router-dom';
+import {useNavigate} from "react-router-dom"; // Импортируем UserService
 
 const UserProfile = () => {
-    const { id } = useParams();
-    const [user, setUser ] = useState(null);
-    const [isEditing, setIsEditing] = useState(false);
-    const [updatedUser , setUpdatedUser ] = useState({});
-    const [error, setError] = useState(null); // Состояние для хранения ошибок
+    const [userData, setUserData] = useState({ name: '', email: '', password: '' });
+    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchUser  = async () => {
-            try {
-                const data = await UserService.getUserById(id);
-                setUser (data);
-                setUpdatedUser (data);
-            } catch (err) {
-                setError('Failed to load user data'); // Устанавливаем ошибку
-            }
-        };
-
-        fetchUser ();
-    }, [id]);
+        const params = new URLSearchParams(window.location.search);
+        setUserData({
+            name: params.get('name') || '',
+            email: params.get('email') || '',
+            password: '' // Инициализируем пароль как пустую строку
+        });
+    }, []);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUpdatedUser (prevState => ({
-            ...prevState,
-            [name]: value
+        const { id, value } = e.target;
+        setUserData((prevData) => ({
+            ...prevData,
+            [id]: value
         }));
     };
 
-    const handleSave = async () => {
+    const handleSaveClick = async () => {
         try {
-            await UserService.updateUser (id, updatedUser );
-            setUser (updatedUser );
-            localStorage.setItem('user', JSON.stringify(updatedUser ));
-            setIsEditing(false);
-        } catch (err) {
-            setError('Failed to update user data'); // Устанавливаем ошибку
+            const updatedUser  = await UserService.updateUser(userId, userData);
+            console.log('User updated successfully:', updatedUser );
+            navigate(`/main`);
+        } catch (error) {
+            console.error('Error updating user:', error);
         }
     };
 
-    if (error) return <div>Error: {error}</div>; // Отображаем ошибку
-    if (!user) return <div>Loading...</div>;
-
     return (
-        <div>
-            <h1>{isEditing ? 'Edit User Profile' : user.name}</h1>
-            {isEditing ? (
-                <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
-                    <div>
-                        <label>
-                            Name:
-                            <input
-                                type="text"
-                                name="name"
-                                value={updatedUser .name}
-                                onChange={handleChange}
-                                required
-                            />
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            Email:
-                            <input
-                                type="email"
-                                name="email"
-                                value={updatedUser .email}
-                                onChange={handleChange}
-                                required
-                            />
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            Bio:
-                            <textarea
-                                name="bio"
-                                // value={updatedUser .bio}
-                                onChange={handleChange}
-                            />
-                        </label>
-                    </div>
-                    <button type="submit">Save Changes</button>
-                    <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
-                </form>
-            ) : (
-                <div>
-                    <p>Email: {user.email}</p>
-                    {/*<p>Bio: {user.bio}</p>*/}
-                    <button onClick={() => setIsEditing(true)}>Edit Profile</button>
-                </div>
-            )}
+        <div className="user-profile-container">
+            <div className="user-profile-header">
+                <img alt="Profile picture" src="https://placehold.co/100x100" />
+                <h2>User Profile</h2>
+            </div>
+            <div className="user-profile-form-group">
+                <label htmlFor="name">Name</label>
+                <input type="text" id="name" value={userData.name} onChange={handleChange} placeholder="Enter your name" required />
+            </div>
+            <div className="user-profile-form-group">
+                <label htmlFor="email">Email</label>
+                <input type="email" id="email" value={userData.email} onChange={handleChange} placeholder="Enter your email" required />
+            </div>
+            <div className="user-profile-form-group">
+                <label htmlFor="password">Password</label>
+                <input type="password" id="password" value={userData.password} onChange={handleChange} placeholder="Enter password to change" />
+            </div>
+            <div className="user-profile-footer">
+                <button type="button" onClick={handleSaveClick}>Save Profile</button>
+            </div>
         </div>
     );
 };

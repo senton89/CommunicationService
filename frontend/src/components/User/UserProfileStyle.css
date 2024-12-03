@@ -1,0 +1,68 @@
+body {
+    padding: 2% 5% 0 5%;
+    font-family: 'Inter', sans-serif;
+    background-color: #f5e9e2;
+}
+.user-profile-container {
+    max-width: 900px;
+    min-width: 50vh;
+    min-height: 50vh;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.user-profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.user-profile-header img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+}
+.user-profile-header h2 {
+    margin: 0;
+    font-weight: 600;
+}
+.user-profile-form-group {
+    margin-bottom: 15px;
+    width: 100%;
+}
+.user-profile-form-group label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+}
+.user-profile-form-group input, .user-profile-form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.user-profile-form-group textarea {
+    resize: vertical;
+    height: 100px;
+}
+.user-profile-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+.user-profile-footer button {
+    background-color: #4a4a4a;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.user-profile-footer button:hover {
+    background-color: #333;
+}

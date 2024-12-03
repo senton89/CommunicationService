@@ -11,6 +11,7 @@ import { UserProvider, useUser  } from "./context/UserContext"; // Импорт�
 import Modal from './components/Auth/Modal';
 import Main from "./components/Main/Main";
 import Chat from "./components/Chat/Chat";
+import UserProfile from "./components/User/UserProfile";
 
 const App = () => {
     const [isModalOpen, setModalOpen] = useState(!localStorage.getItem('user')===null);
@@ -30,6 +31,7 @@ const App = () => {
                             <Routes>
                                 <Route path="/" element={<Navigate to="/main"/>}/>
                                 <Route path="/main" element={<MainWrapper/>}/>
+                                <Route path="/user-profile" element={<UserProfile/>} />
                                 <Route path="/chat/:contactId" element={<ChatWrapper/>}/>
                                 <Route path="/users" element={<UserList/>}/>
                                 <Route path="/messages/:userId" element={<MessageList/>}/>

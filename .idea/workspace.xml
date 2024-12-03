@@ -4,41 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21a6fa2e-417d-4fc0-87f4-09e0363daa88" name="Changes" comment="cors problem fixed">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Auth/Login.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Auth/Modal.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Auth/Modal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Chat/Chat.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Chat/ChatList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Main/Main.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Main/Main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Messages/MessagesList.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/User/UserProfileModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/services/AuthService.js" afterDir="false" />
+    <list default="true" id="21a6fa2e-417d-4fc0-87f4-09e0363daa88" name="Changes" comment="chat + forum">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/User/UserProfileStyle.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/temp/TestMessages.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Controller/MessageController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Controller/MessageController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Controller/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Controller/UserController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/DTO/UserDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/DTO/UserDTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Repository/MessageRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Repository/MessageRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Repository/UserRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Repository/UserRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Service/MessageService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Service/MessageService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Service/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Service/UserService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Messages/MessageForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Messages/MessageForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Messages/MessageList.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Messages/MessageList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Posts/PostList.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Posts/PostList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/User/UserList.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/User/UserList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Chat/Chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Chat/Chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Main/Main.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Main/Main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/User/UserProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/User/UserProfile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/context/CommentContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/context/CommentContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/context/MessageContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/context/MessageContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/context/PostContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/context/PostContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/context/UserContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/context/UserContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/MessageService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/MessageService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/services/UserService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/UserService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/temp/tempReg.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/temp/tempReg.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,9 +24,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="JavaScript File" />
         <option value="JSX File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -79,7 +55,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/sento/RiderProjects/CommunicationService/frontend/public&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/sento/EducationSystem&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -96,6 +72,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\sento\RiderProjects\CommunicationService\frontend\public" />
+      <recent name="C:\Users\sento\RiderProjects\CommunicationService\frontend\src\temp" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\sento\RiderProjects\CommunicationService\frontend\src\temp" />
     </key>
   </component>
@@ -161,7 +140,10 @@
       <workItem from="1732963330407" duration="13380000" />
       <workItem from="1732981706090" duration="63000" />
       <workItem from="1732981785673" duration="14392000" />
-      <workItem from="1733044548924" duration="32660000" />
+      <workItem from="1733044548924" duration="32747000" />
+      <workItem from="1733159404025" duration="1904000" />
+      <workItem from="1733245515405" duration="4295000" />
+      <workItem from="1733249860655" duration="5088000" />
     </task>
     <task id="LOCAL-00001" summary="frontend and defragmentation">
       <option name="closed" value="true" />
@@ -187,7 +169,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732907899041</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="chat + forum">
+      <option name="closed" value="true" />
+      <created>1733085726272</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1733085726272</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,6 +187,7 @@
     <MESSAGE value="frontend and defragmentation" />
     <MESSAGE value="cors problem" />
     <MESSAGE value="cors problem fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="cors problem fixed" />
+    <MESSAGE value="chat + forum" />
+    <option name="LAST_COMMIT_MESSAGE" value="chat + forum" />
   </component>
 </project>
