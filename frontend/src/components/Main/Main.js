@@ -4,7 +4,6 @@ import "./Main.css";
 import MessageList from "../Messages/MessageList";
 import UserList from "../User/UserList";
 import PostList from "../Posts/PostList";
-import UserService from "../../services/UserService";
 import { FaSearch } from "react-icons/fa";
 import {UserProvider} from "../../context/UserContext";
 
@@ -16,6 +15,9 @@ import {UserProvider} from "../../context/UserContext";
 const Main = ({ userId }) => {
     const user = JSON.parse(localStorage.getItem('user'));
     const navigate = useNavigate(); // Используем useHistory для навигации
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredUsers, setFilteredUsers] = useState([]);
+
 
     if (!user) {
         // Обработка отсутствия пользователя
@@ -27,10 +29,29 @@ const Main = ({ userId }) => {
         setModalOpen(true);
     };
 
+    const handleStartChatClick = () => {
+        setModalOpen(true);
+    };
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+        if (value) {
+            const filtered = users.filter(u => u.username.toLowerCase().includes(value.toLowerCase()));
+            setFilteredUsers(filtered);
+        } else {
+            setFilteredUsers([]);
+        }
+    };
+    const handleUserSelect = (selectedUserId) => {
+        setModalOpen(false);
+        navigate(`/chat/${selectedUserId}`);
+    };
     const handleProfileClick = () => {
         // Переход на страницу профиля с передачей данных
         navigate(`/user-profile?name=${encodeURIComponent(user.username)}&email=${encodeURIComponent(user.email)}`);
     };
+
 
     const messages = MessageList(userId);
     const users = UserList();
@@ -53,7 +74,8 @@ const Main = ({ userId }) => {
                         </div>
                     </div>
                     <div>
-                        <button className="bg-[#f5e9e2] border border-gray-200 rounded-full py-1 px-4 text-sm">Start Chat</button>
+                        <button className="bg-[#f5e9e2] border border-gray-200 rounded-full py-1 px-4 text-sm" onClick={handleStartChatClick}>
+                            Start Chat</button>
                     </div>
                 </div>
                 <div className="section-title font-semibold my-5">Contacts</div>
@@ -99,7 +121,27 @@ const Main = ({ userId }) => {
                     <button className="bg-gray-800 text-white rounded-full py-2 px-5 text-sm">Search for posts</button>
                 </div>
             </div>
-            {/*<UserProfileModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} userId={userId} />*/}
+            {isModalOpen && (
+                <div className="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="modal-content bg-white rounded-lg p-5">
+                        <span className="close cursor-pointer" onClick={() => setModalOpen(false)}>&times;</span>
+                        <input
+                            type="text"
+                            placeholder="Search for a user"
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            className="search-input border-b border-gray-300 py-2 px-3 w-full"
+                        />
+                        <ul className="user-list mt-2">
+                            {filteredUsers.map(user => (
+                                <li key={user.id} onClick={() => handleUserSelect(user.id)} className="user-item cursor-pointer hover:bg-gray-200 p-2">
+                                    {user.username}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

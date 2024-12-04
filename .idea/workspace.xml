@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21a6fa2e-417d-4fc0-87f4-09e0363daa88" name="Changes" comment="chat + forum">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/User/UserProfileStyle.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/temp/TestMessages.html" afterDir="false" />
+    <list default="true" id="21a6fa2e-417d-4fc0-87f4-09e0363daa88" name="Changes" comment="messages + profile">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/Chat/Chat.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/Chat/Chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Chat/Chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Main/Main.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Main/Main.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/Main/Main.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Main/Main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/User/UserProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/User/UserProfile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/UserService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/UserService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +138,8 @@
       <workItem from="1733044548924" duration="32747000" />
       <workItem from="1733159404025" duration="1904000" />
       <workItem from="1733245515405" duration="4295000" />
-      <workItem from="1733249860655" duration="5088000" />
+      <workItem from="1733249860655" duration="5210000" />
+      <workItem from="1733333937643" duration="4251000" />
     </task>
     <task id="LOCAL-00001" summary="frontend and defragmentation">
       <option name="closed" value="true" />
@@ -177,7 +173,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733085726272</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="messages + profile">
+      <option name="closed" value="true" />
+      <created>1733255097565</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1733255097565</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -188,6 +192,7 @@
     <MESSAGE value="cors problem" />
     <MESSAGE value="cors problem fixed" />
     <MESSAGE value="chat + forum" />
-    <option name="LAST_COMMIT_MESSAGE" value="chat + forum" />
+    <MESSAGE value="messages + profile" />
+    <option name="LAST_COMMIT_MESSAGE" value="messages + profile" />
   </component>
 </project>

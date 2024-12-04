@@ -1,0 +1,137 @@
+.chat-container {
+    max-width: 90vh; /* Максимальная ширина контейнера */
+    min-width: 50vh; /* Максимальная ширина контейнера */
+    max-height: 90vh;
+    margin: 0 auto; /* Центрирование контейнера */
+    padding: 20px; /* Отступы внутри контейнера */
+    background-color: #ffffff; /* Цвет фона */
+    border-radius: 8px; /* Закругленные углы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для контейнера */
+}
+
+.chat-header {
+    display: flex; /* Используем flexbox для заголовка */
+    justify-content: space-between; /* Распределяем пространство между элементами */
+    align-items: center; /* Выравниваем элементы по центру */
+}
+
+.chat-title {
+    font-size: 1.5rem; /* Размер шрифта заголовка */
+    font-weight: 600; /* Жирный шрифт */
+    color: #333; /* Цвет текста */
+}
+.chat-message-details {
+    display: flex; /* Используем flexbox для выравнивания */
+    justify-content: space-between; /* Распределяем пространство между сообщением и временем */
+    align-items: center; /* Выравниваем элементы по центру */
+    margin-top: 5px; /* Отступ сверху для отделения от имени */
+}
+
+.chat-contact-time {
+    margin-left: 10px; /* Отступ слева для времени сообщения */
+}
+
+.chat-new-message-btn {
+    background-color: #007bff; /* Цвет фона кнопки */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем границу */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 10px 15px; /* Отступы внутри кнопки */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+}
+
+.chat-new-message-btn:hover {
+    background-color: #0056b3; /* Цвет фона при наведении */
+}
+
+.chat-message-list {
+    margin-top: 20px; /* Отступ сверху для списка сообщений */
+    max-height: 400px; /* Максимальная высота списка сообщений */
+    overflow-y: auto; /* Прокрутка по вертикали */
+    border: 1px solid #ddd; /* Граница списка сообщений */
+    border-radius: 5px; /* Закругленные углы */
+    background-color: white; /* Цвет фона списка сообщений */
+}
+
+.chat-message-item {
+    padding: 10px; /* Отступы внутри элемента сообщения */
+    border-bottom: 1px solid #eee; /* Граница между сообщениями */
+}
+
+.chat-message-item:last-child {
+    border-bottom: none; /* Убираем границу у последнего сообщения */
+}
+
+.chat-contact-info {
+    margin-left: 10px; /* Отступ слева для информации о контакте */
+}
+
+.chat-name {
+    font-weight: bold; /* Жирный шрифт для имени */
+    color: #333; /* Цвет текста имени */
+    margin-bottom: 0.5vh;
+}
+
+.chat-details {
+    font-size: 0.875rem; /* Размер шрифта для деталей сообщения */
+    color: #666; /* Цвет текста для деталей */
+}
+
+.chat-contact-time {
+    font-size: 0.75rem; /* Размер шрифта для времени сообщения */
+    color: #999; /* Цвет текста для времени */
+}
+
+.chat-message-input {
+    width: 100%; /* Ширина текстового поля */
+    border: 1px solid #ccc; /* Граница текстового поля */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 10px; /* Отступы внутри текстового поля */
+    resize: none; /* Запрет изменения размера текстового поля */
+}
+.chat-btn-container {
+    display: flex; /* Используем flexbox для контейнера кнопки */
+    justify-content: space-between;
+    width: 100%; /* Задаем ширину контейнера */
+}
+
+.chat-send-message-btn,
+.chat-edit-message-btn,
+.chat-delete-message-btn {
+    background-color: #28a745; /* Цвет фона кнопки отправки */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем границу */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 10px 15px; /* Отступы внутри кнопки */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+}
+.chat-return-btn{
+    justify-content: flex-end;
+    border: none; /* Убираем границу */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 10px 15px; /* Отступы внутри кнопки */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+}
+
+.chat-send-message-btn:hover {
+    background-color: #218838; /* Цвет фона при наведении */
+}
+
+.chat-edit-message-btn {
+    background-color: #ffc107; /* Цвет фона кнопки редактирования */
+}
+
+.chat-edit-message-btn:hover {
+    background-color: #e0a800; /* Цвет фона при наведении */
+}
+
+.chat-delete-message-btn {
+    background-color: #dc3545; /* Цвет фона кнопки удаления */
+}
+
+.chat-delete-message-btn:hover {
+    background-color: #c82333; /* Цвет фона при наведении */
+}
