@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './UserProfileStyle.css';
 import UserService from '../../services/UserService';
-import {useNavigate} from "react-router-dom"; // Импортируем UserService
+import {useNavigate} from "react-router-dom";
+import {UserProvider} from "../../context/UserContext"; // Импортируем UserService
 
 const UserProfile = () => {
     const [userData, setUserData] = useState({ name: '', email: '', password: '' });
@@ -35,6 +36,16 @@ const UserProfile = () => {
         }
     };
 
+    const handleLogOut = () => {
+        try {
+            navigate(`/register`);
+            localStorage.removeItem('user');
+        }catch(Ex)
+        {
+            console.log(Ex);
+        }
+    };
+
     return (
         <div className="user-profile-container">
             <div className="user-profile-header">
@@ -55,6 +66,9 @@ const UserProfile = () => {
             </div>
             <div className="user-profile-footer">
                 <button type="button" onClick={handleSaveClick}>Save Profile</button>
+            </div>
+            <div className="user-profile-footer">
+                <button type="button" onClick={handleLogOut}>Log out</button>
             </div>
         </div>
     );

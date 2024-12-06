@@ -99,7 +99,7 @@
 .chat-send-message-btn,
 .chat-edit-message-btn,
 .chat-delete-message-btn {
-    background-color: #28a745; /* Цвет фона кнопки отправки */
+    background-color: #4a4a4a; /* Цвет фона кнопки отправки */
     color: white; /* Цвет текста кнопки */
     border: none; /* Убираем границу */
     border-radius: 5px; /* Закругленные углы */
@@ -117,7 +117,7 @@
 }
 
 .chat-send-message-btn:hover {
-    background-color: #218838; /* Цвет фона при наведении */
+    background-color: #4a4a4a; /* Цвет фона при наведении */
 }
 
 .chat-edit-message-btn {

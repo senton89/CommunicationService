@@ -52,6 +52,7 @@ const Chat = ( contact_id ) => {
                 MessageService.sendMessage(newMessage);
             }
             setMessageInput('');
+            window.location.reload()
         }
     };
 
@@ -72,7 +73,6 @@ const Chat = ( contact_id ) => {
     const handleReturn = () =>{
         navigate(`/main`);
     }
-    console.log(userMap);
 
     return (
         <div className="chat-container">

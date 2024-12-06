@@ -18,7 +18,7 @@ const MessageList = ( userId ) => {
         fetchMessages();
     }, [userId]);
 
-    return ( messages);
+    return (messages);
 
 };
 

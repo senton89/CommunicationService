@@ -18,7 +18,8 @@ const UserService = {
     return response.data;
 },
     createUser: async (user) => {
-    const response = await axios.post(API_URL, user);
+        console.log(user);
+    const response = await axios.post(`${API_URL}/signup`, user);
     return response.data;
 },
     updateUser: async (id, user) => {

@@ -7,8 +7,9 @@ a {
 }
 .container {
     /*max-width: 900px;*/
+    min-height: 75vh;
     width: 90vw;
-    margin: 50px auto;
+    margin: -5vh auto 5vh;
     background-color: #fff;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -107,6 +108,7 @@ a {
 }
 .forum-section .forum-item {
     padding: 10px 0;
+    transition: all 0.3s ease;
 }
 .forum-section .forum-item .forum-info {
     flex-grow: 1;
@@ -151,4 +153,42 @@ a {
     overflow-y: auto;
 }
 
+.modal-main{
+    background-color: lightgray;
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 1;
+    position: fixed;
+    top: 20vh;
+    left: 50vw;
+    border: 1px #f5e9e2;
+}
 
+.user-item{
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.user-list {
+    list-style-type: "👤";
+}
+
+.forum-item-enter {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.forum-item-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.forum-item-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.forum-item-exit-active {
+    opacity: 0;
+    transform: translateY(-10px);
+}

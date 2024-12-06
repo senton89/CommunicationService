@@ -1,0 +1,101 @@
+.create-post-form {
+    background-color: #ffffff; /* Белый фон */
+    border-radius: 8px; /* Закругленные углы */
+    padding: 20px; /* Внутренние отступы */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
+    max-width: 90vw; /* Максимальная ширина формы */
+    min-width: 80vw;
+    max-height: 80vh; /* Максимальная ширина формы */
+    min-height: 70vh;
+    margin: 20px auto; /* Центрирование формы */
+    position: relative;
+}
+
+.create-post-form h2 {
+    font-size: 1.5rem; /* Размер шрифта заголовка */
+    color: #333; /* Цвет текста заголовка */
+    margin-bottom: 16px; /* Отступ снизу */
+}
+
+.create-post-form label {
+    font-size: 0.875rem; /* Размер шрифта для меток */
+    color: #555; /* Цвет текста меток */
+    margin-bottom: 8px; /* Отступ снизу */
+    display: block; /* Блочный элемент */
+}
+
+.create-post-form textarea {
+    border: 1px solid #ccc; /* Цвет рамки */
+    border-radius: 4px; /* Закругленные углы */
+    width: 100%; /* Ширина 100% */
+    padding: 10px; /* Внутренние отступы */
+    font-size: 1rem; /* Размер шрифта */
+    resize: vertical; /* Позволяет изменять размер только по вертикали */
+}
+
+.create-post-form select {
+    border: 1px solid #ccc; /* Цвет рамки */
+    border-radius: 4px; /* Закругленные углы */
+    width: 100%; /* Ширина 100% */
+    padding: 10px; /* Внутренние отступы */
+    font-size: 1rem; /* Размер шрифта */
+}
+
+.create-post-form .button-container {
+    display: flex;
+    position: absolute; /* Абсолютное позиционирование для кнопки */
+    bottom: 2vh; /* Отступ от нижней границы формы */
+    justify-content: space-between;
+    left: 2vh;
+    right: 2vh;
+}
+
+.create-button {
+    background-color: #4a4a4a; /* Цвет фона кнопки */
+    color: #ffffff; /* Цвет текста кнопки */
+    border: none; /* Без рамки */
+    border-radius: 4px; /* Закругленные углы */
+    padding: 10px 20px; /* Внутренние отступы */
+    font-size: 1rem; /* Размер шрифта */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+    margin-top: 1vh;
+}
+.return-button {
+    background-color: #f5e9e2; /* Цвет фона кнопки */
+    color: #4a4a4a; /* Цвет текста кнопки */
+    border: none; /* Без рамки */
+    border-radius: 4px; /* Закругленные углы */
+    padding: 10px 20px; /* Внутренние отступы */
+    font-size: 1rem; /* Размер шрифта */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+    margin-top: 1vh;
+
+}
+
+.create-post-form .create-button:hover {
+    background-color: #2D3748; /* Цвет фона кнопки при наведении */
+}
+.create-post-form .return-button:hover {
+    background-color: #f5e9c4; /* Цвет фона кнопки при наведении */
+}
+
+.modal-topic{
+    margin-top: 2vh;
+}
+
+.modal-topic-content{
+    display: flex;
+    border-radius: 10px;
+    border: 1px #2D3748;
+    justify-content: left;
+}
+
+.modal-topic-content button{
+    margin-left: 1vh;
+}
+
+.modal-topic-content input{
+    margin-top: 1vh;
+}

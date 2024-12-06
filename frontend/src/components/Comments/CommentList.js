@@ -1,22 +1,14 @@
 import React from 'react';
+import PostService from "../../services/PostService";
+import CommentService from "../../services/CommentService";
 
-const CommentList = ({ comments }) => {
+const CommentList = (postId) => {
+    const comments = CommentService.getComments(postId)
     if (!comments || comments.length === 0) {
-        return <p>Комментариев нет.</p>;
+        return [];
     }
 
-    return (
-        <div>
-            <h2>Комментарии</h2>
-            <ul>
-                {comments.map(comment => (
-                    <li key={comment.id}>
-                        <p>{comment.content}</p>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+    return (comments);
 };
 
 export default CommentList;

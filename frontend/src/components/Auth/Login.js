@@ -7,7 +7,7 @@ import { useUser  } from '../../context/UserContext';
 import UserService from "../../services/UserService"; // Импортируйте useUser
 import './Modal.css';
 
-const Login = ({onSuccess}) => {
+const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -20,8 +20,8 @@ const Login = ({onSuccess}) => {
             const user = await UserService.login(username, password);
             login(user); // Обновите состояние userId
             localStorage.setItem('user', JSON.stringify(user));
-            onSuccess();
             navigate('/main');
+            window.location.reload()
         } catch (err) {
             console.log(err);
             setError('Неверные учетные данные');
